@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "nhjhyjiDib1nm8cHkUT2FjsNLthdK3hofs7Ng58XSEcos1rp02V4sfmXaeslSQpyOI//ILejDKB9cm14eqVqBQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\gukov\\Desktop\\Repository\\Technical task\\Factorial\\Factorial\\Factorial.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\gukov\\.nuget\\packages\\commandlineparser\\2.8.0\\commandlineparser.2.8.0.nupkg.sha512"
+  ],
+  "logs": []
+}
