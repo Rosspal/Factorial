@@ -21,19 +21,31 @@ namespace Factorial
         static void Main(string[] args)
         {
             ParallelOptions parallelOptions = new ParallelOptions();
-            string fileName = ParsePath(args);
             parallelOptions.MaxDegreeOfParallelism = ParseMaxDegreeParall(args);
 
-            int[] array = FileReading(fileName);
-            long[] result = new long[array.Length];
+            string fileName = ParsePath(args);
+            StreamReader fileIn = new StreamReader(fileName);
+            StreamWriter fileOut = new StreamWriter("result.txt");
 
-            Parallel.For(0, array.Length, parallelOptions, (i) =>
+            int[] array;
+            long[] result;
+
+            while (!fileIn.EndOfStream)
             {
-                long temp = FactorialRecursion(array[i]);
-                result[i] = temp;
-            });
+                array = FileReading(fileIn, 1_000_000);
+                result = new long[array.Length];
 
-            FileWriting(result);
+                Parallel.For(0, array.Length, parallelOptions, (i) =>
+                {
+                    long temp = FactorialRecursion(array[i]);
+                    result[i] = temp;
+                });
+
+                FileWriting(result,fileOut);
+            }
+
+            fileIn.Close();
+            fileOut.Close();
         }
 
 
@@ -76,19 +88,18 @@ namespace Factorial
                        }
 
                    });
-
+    
 
             return maxDegreeParall;
         }
 
-        static int[] FileReading(string fileName)
+        static int[] FileReading(StreamReader fileIn, int count )
         {
-            StreamReader fileIn = new StreamReader(fileName);
-            int count = File.ReadAllLines(fileName).Length;
+            
             int[] array = new int[count];
 
             int index = 0;
-            while (!fileIn.EndOfStream)
+            while ( (!fileIn.EndOfStream) && (index < count) )
             {
                 try
                 {
@@ -100,21 +111,17 @@ namespace Factorial
 
                 }
             }
-            fileIn.Close();
-
+            Array.Resize(ref array,index);
             return array;
         }
 
-        static void FileWriting(long[] result)
+        static void FileWriting(long[] result, StreamWriter fileOut)
         {
-            StreamWriter fileOut = new StreamWriter("result.txt");
             foreach (long number in result)
             {
                 fileOut.WriteLine(number);
             }
-            fileOut.Close();
         }
-
 
         static long FactorialRecursion(int number)
         {
