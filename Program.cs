@@ -26,13 +26,14 @@ namespace Factorial
             string fileName = ParsePath(args);
             StreamReader fileIn = new StreamReader(fileName);
             StreamWriter fileOut = new StreamWriter("result.txt");
+            int buffer = 1_000_000; // Количество обрабатываемых строк за раз.
 
             int[] array;
             long[] result;
 
             while (!fileIn.EndOfStream)
             {
-                array = FileReading(fileIn, 1_000_000);
+                array = FileReading(fileIn, buffer);
                 result = new long[array.Length];
 
                 Parallel.For(0, array.Length, parallelOptions, (i) =>
